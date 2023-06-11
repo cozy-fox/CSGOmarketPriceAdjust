@@ -275,7 +275,7 @@ async function updateMyItems() {
 
       var itemName = item.market_hash_name;
       var returnedItems = res.data.data;
-      console.log(returnedItems);
+    //  console.log(returnedItems);
       var listedItemPriceInDollars = item.price * 1000;
       var leastWaxPrice = await findLeastWaxPrice(returnedItems);
       // console.log(leastWaxPrice,listedItemPriceInDollars)
@@ -291,26 +291,27 @@ async function updateMyItems() {
         } else {
           newItemPrice = buffUpperDelimiter;
         }
-        try {
-          var res = await axios.post(
-            WAX_BASE_URL + `/set-price?key=${waxPeerApiKey}&item_id=${item.item_id}&price=${Math.round(newItemPrice)}&cur=USD`,
-          );
-          console.log(leastWaxPrice,listedItemPriceInDollars,buffLowerDelimiter,buffUpperDelimiter,newItemPrice);
-          var setTime = Date.now();
-          while (true) { if (Date.now() - setTime > 200) break; }
-
-          if (res.status = 200) {
-            if (res.data.success) {
-              if (showResultDetail) {
-
-                console.log(`      name : ${item.market_hash_name} old price : ${listedItemPriceInDollars / 1000} new price :  ${newItemPrice / 1000}`)
-
+        if(newItemPrice!=listedItemPriceInDollars){
+          try {
+            var res = await axios.post(
+              WAX_BASE_URL + `/set-price?key=${waxPeerApiKey}&item_id=${item.item_id}&price=${Math.round(newItemPrice)}&cur=USD`,
+            );
+          //  console.log(leastWaxPrice,listedItemPriceInDollars,buffLowerDelimiter,buffUpperDelimiter,newItemPrice);
+            var setTime = Date.now();
+            while (true) { if (Date.now() - setTime > 200) break; }
+  
+            if (res.status = 200) {
+              if (res.data.success) {
+                if (showResultDetail) {
+  
+                  console.log(`      name : ${item.market_hash_name} old price : ${listedItemPriceInDollars / 1000} new price :  ${newItemPrice / 1000}`)
+  
+                }
+                updated++;
               }
-              updated++;
             }
-          }
-        } catch { }
-
+          } catch { }
+        }
       }
     }
   }
