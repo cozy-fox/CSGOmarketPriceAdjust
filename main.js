@@ -91,6 +91,8 @@ function getLowerDelimiter(name) {
   var price = priceMPIREItemData[name].buff.price * 10;
   for (eachDelimiter of detailedDelimiter) {
     if (eachDelimiter.range[0] * 1000 < price && eachDelimiter.range[1] * 1000 > price) {
+     // console.log(name,"low",price,eachDelimiter.range[0] * 1000,eachDelimiter.range[1] * 1000,eachDelimiter.delimiter[0])
+      
       delimiter = eachDelimiter.delimiter[0];
     }
   }
@@ -103,6 +105,7 @@ function getUpperDelimiter(name) {
 
   for (eachDelimiter of detailedDelimiter) {
     if (eachDelimiter.range[0] * 1000 < price && eachDelimiter.range[1] * 1000 > price) {
+      //console.log(name,"low",price,eachDelimiter.range[0] * 1000,eachDelimiter.range[1] * 1000,eachDelimiter.delimiter[1])
       delimiter = eachDelimiter.delimiter[1];
     }
   }
