@@ -145,15 +145,21 @@ async function getWaxPriceFor(item) {
     }
 
     returnedItems = res.data.data;
-
     waxCache[name] = returnedItems;
   }
   if (!returnedItems) {
     return await getUpperDelimiter(item.market_hash_name);
   }
-  var leastWaxPrice = await findLeastWaxPrice(returnedItems);
+  var leastWaxPrice = await findLeastWaxPrice(returnedItems)/1000;
   var buffLowerDelimiter = await getLowerDelimiter(item.market_hash_name) / 1000;
   var buffUpperDelimiter = await getUpperDelimiter(item.market_hash_name) / 1000;
+  if(showResultDetail){
+    console.log("least price : ",leastWaxPrice);
+    console.log("low limit : ",buffLowerDelimiter);
+    console.log("high limit : ",buffUpperDelimiter);
+    console.log("------------");
+  }
+
   if (leastWaxPrice < buffLowerDelimiter) {
     return buffLowerDelimiter;
   } else if (leastWaxPrice <= buffUpperDelimiter) {
@@ -265,6 +271,7 @@ async function updateMyItems() {
 
       var itemName = item.market_hash_name;
       var returnedItems = res.data.data;
+      console.log(returnedItems);
       var listedItemPriceInDollars = item.price * 1000;
       var leastWaxPrice = await findLeastWaxPrice(returnedItems);
       // console.log(leastWaxPrice,listedItemPriceInDollars)
@@ -284,7 +291,7 @@ async function updateMyItems() {
           var res = await axios.post(
             WAX_BASE_URL + `/set-price?key=${waxPeerApiKey}&item_id=${item.item_id}&price=${Math.round(newItemPrice)}&cur=USD`,
           );
-          // console.log(leastWaxPrice,listedItemPriceInDollars,buffLowerDelimiter,buffUpperDelimiter,newItemPrice);
+          console.log(leastWaxPrice,listedItemPriceInDollars,buffLowerDelimiter,buffUpperDelimiter,newItemPrice);
           var setTime = Date.now();
           while (true) { if (Date.now() - setTime > 200) break; }
 
