@@ -157,10 +157,11 @@ async function getWaxPriceFor(item) {
   var buffLowerDelimiter = await getLowerDelimiter(item.market_hash_name) / 1000;
   var buffUpperDelimiter = await getUpperDelimiter(item.market_hash_name) / 1000;
   if(showResultDetail){
+    console.log("------------");
     console.log("least price : ",leastWaxPrice);
     console.log("low limit : ",buffLowerDelimiter);
     console.log("high limit : ",buffUpperDelimiter);
-    console.log("------------");
+    
   }
 
   if (leastWaxPrice < buffLowerDelimiter) {
